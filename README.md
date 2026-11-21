@@ -2,6 +2,20 @@
 
 Show Waystones on Pl3xMap.
 
+## Installation
+
+Install it on a Fabric server alongside [Waystones](https://modrinth.com/mod/waystones) and [Pl3xMap](https://modrinth.com/plugin/pl3xmap).
+
+| Mod       | Version    |
+| --------- | ---------- |
+| Minecraft | 1.21.1     |
+| Waystones | 21.1.46    |
+| Pl3xMap   | 1.21.1-508 |
+
+## Usage
+
+Each world on the map gets a "Waystones" layer with an icon on every waystone and its name as a tooltip. Waystones are shown even if no player discovered them yet. Sharestones and warp plates aren't shown.
+
 ## License
 
 Copyright © 2026 Nato Boram
