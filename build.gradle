@@ -1,6 +1,19 @@
 plugins {
 	id 'net.fabricmc.fabric-loom-remap' version "${loom_version}"
 	id 'maven-publish'
+	id 'com.diffplug.spotless' version '8.10.4'
+}
+
+spotless {
+	java {
+		eclipse().configFile('.java-formatter.xml')
+		target 'src/**/*.java', 'source/**/*.java'
+	}
+
+	groovyGradle {
+		target '*.gradle'
+		greclipse()
+	}
 }
 
 repositories {
