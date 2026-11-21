@@ -14,7 +14,13 @@ Install it on a Fabric server alongside [Waystones](https://modrinth.com/mod/way
 
 ## Usage
 
-Each world on the map gets a "Waystones" layer with an icon on every waystone and its name as a tooltip. Waystones are shown even if no player discovered them yet. Sharestones and warp plates aren't shown.
+Each world on the map gets a "Waystones" layer with an icon and a name on:
+
+- Discovered waystones, unless they're "Visible to Team"
+- Sharestones
+- Warp plates holding a shard attuned to another warp plate, unless they're disabled by redstone
+
+The material of waystones and the status of warp plates are read from their block, which is remembered whenever its chunk is loaded. Until their chunk is first loaded with this mod installed, waystones use the default icon and warp plates are hidden.
 
 ## License
 
