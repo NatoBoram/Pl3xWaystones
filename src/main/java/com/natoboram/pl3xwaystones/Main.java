@@ -1,13 +1,13 @@
 package com.natoboram.pl3xwaystones;
 
-import net.fabricmc.api.Environment;
-import net.fabricmc.api.ModInitializer;
 import static net.fabricmc.api.EnvType.SERVER;
-
-import net.minecraft.resources.ResourceLocation;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import net.fabricmc.api.Environment;
+import net.fabricmc.api.ModInitializer;
+import net.minecraft.resources.ResourceLocation;
 
 @Environment(value = SERVER)
 public class Main implements ModInitializer {
@@ -18,6 +18,10 @@ public class Main implements ModInitializer {
 	// That way, it's clear which mod wrote info, warnings, and errors.
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
+	public static ResourceLocation id(final String path) {
+		return ResourceLocation.fromNamespaceAndPath(MOD_ID, path);
+	}
+
 	@Override
 	public void onInitialize() {
 		// This code runs as soon as Minecraft is in a mod-load-ready state.
@@ -25,9 +29,5 @@ public class Main implements ModInitializer {
 		// Proceed with mild caution.
 
 		LOGGER.info("Loaded Pl3xWaystones.");
-	}
-
-	public static ResourceLocation id(String path) {
-		return ResourceLocation.fromNamespaceAndPath(MOD_ID, path);
 	}
 }
