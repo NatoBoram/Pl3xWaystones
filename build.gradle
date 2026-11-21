@@ -67,13 +67,12 @@ java {
 	targetCompatibility = JavaVersion.VERSION_21
 }
 
-jar {
-	def projectName = project.name
-	inputs.property "projectName", projectName
+tasks.withType(org.gradle.api.tasks.bundling.Jar).configureEach {
+	from("LICENSE.md", "README.md")
+}
 
-	from("LICENSE") {
-		rename { "${it}_$projectName"}
-	}
+tasks.withType(org.gradle.jvm.tasks.Jar).configureEach {
+	archiveVersion = "${project.version}+${project.minecraft_version}"
 }
 
 // configure the maven publication
