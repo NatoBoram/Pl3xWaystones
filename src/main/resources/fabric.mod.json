@@ -1,34 +1,23 @@
 {
 	"schemaVersion": 1,
-	"id": "modid",
+	"id": "pl3xwaystones",
 	"version": "${version}",
-	"name": "Example Mod",
-	"description": "This is an example description! Tell everyone what your mod is about!",
-	"authors": [
-		"Me!"
-	],
+	"name": "Pl3xWaystones",
+	"description": "Show Waystones on Pl3xMap.",
+	"authors": ["Nato Boram"],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"homepage": "https://github.com/NatoBoram/Pl3xWaystones",
+		"sources": "https://github.com/NatoBoram/Pl3xWaystones",
+		"issues": "https://github.com/NatoBoram/Pl3xWaystones/issues",
+		"email": "10495562+NatoBoram@users.noreply.github.com"
 	},
-	"license": "CC0-1.0",
-	"icon": "assets/modid/icon.png",
-	"environment": "*",
+	"license": "AGPL-3.0-or-later",
+	"icon": "assets/pl3xwaystones/icon.png",
+	"environment": "server",
 	"entrypoints": {
-		"main": [
-			"com.example.ExampleMod"
-		],
-		"client": [
-			"com.example.client.ExampleModClient"
-		]
+		"main": ["com.natoboram.pl3xwaystones.Main"]
 	},
-	"mixins": [
-		"modid.mixins.json",
-		{
-			"config": "modid.client.mixins.json",
-			"environment": "client"
-		}
-	],
+	"mixins": [],
 	"depends": {
 		"fabricloader": ">=0.20.1",
 		"minecraft": "~1.21.1",

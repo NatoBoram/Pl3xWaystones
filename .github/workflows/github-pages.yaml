@@ -1,0 +1,41 @@
+name: GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build_pages:
+    if: github.actor != 'nektos/act'
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-java@v6
+        with:
+          java-version: 27
+          distribution: temurin
+      - uses: gradle/actions/setup-gradle@v6
+
+      - run: ./gradlew javadoc
+
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: build/docs/javadoc
+
+  deploy_pages:
+    permissions:
+      pages: write
+      id-token: write
+
+    needs: build_pages
+    runs-on: ubuntu-latest
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - uses: actions/deploy-pages@v5
+        id: deployment
