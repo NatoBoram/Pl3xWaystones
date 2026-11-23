@@ -23,9 +23,12 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.state.BlockState;
+import net.pl3x.map.core.markers.Point;
 import net.pl3x.map.core.markers.layer.WorldLayer;
 import net.pl3x.map.core.markers.marker.Marker;
 import net.pl3x.map.core.markers.option.Options;
+import net.pl3x.map.core.markers.option.Options.Builder;
+import net.pl3x.map.core.markers.option.Tooltip.Direction;
 import net.pl3x.map.core.world.World;
 
 /** Shows the waystones, sharestones and warp plates of a world on Pl3xMap. */
@@ -75,9 +78,14 @@ public class WaystonesLayer extends WorldLayer {
 		final BlockPos pos = waystone.getPos();
 		final String name = HtmlEscapers.htmlEscaper().escape(waystone.getName().getString());
 
+		final Builder options = Options.builder()
+			.tooltipContent(name)
+			.tooltipDirection(Direction.TOP)
+			.tooltipOffset(Point.of(0, -7));
+
 		return Marker
 			.icon(waystone.getWaystoneUid().toString(), pos.getX(), pos.getZ(), Icons.resolve(waystone, block), ICON_SIZE)
-			.setOptions(Options.builder().tooltipContent(name));
+			.setOptions(options);
 	}
 
 	private final WaystoneBlocks WAYSTONE_BLOCKS;
