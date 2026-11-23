@@ -11,6 +11,7 @@ import java.util.UUID;
 import org.jetbrains.annotations.Nullable;
 
 import com.google.common.html.HtmlEscapers;
+import com.natoboram.pl3xwaystones.attachments.WaystoneBlocks;
 
 import net.blay09.mods.waystones.api.Waystone;
 import net.blay09.mods.waystones.api.WaystoneTypes;
@@ -31,21 +32,6 @@ import net.pl3x.map.core.world.World;
 @Environment(value = SERVER)
 public class WaystonesLayer extends WorldLayer {
 	private static final int ICON_SIZE = 16;
-
-	/** Reads the blocks of waystones in loaded chunks and remembers the others. */
-	private static Map<UUID, BlockState> blocks(final ServerLevel level, final List<Waystone> waystones) {
-		final Map<UUID, BlockState> lastSeen = level.getAttachedOrElse(Main.WAYSTONE_BLOCKS, Map.of());
-		final Map<UUID, BlockState> blocks = new HashMap<>();
-
-		for (final Waystone waystone : waystones) {
-			final BlockPos pos = waystone.getPos();
-			final BlockState block = level.isLoaded(pos) ? level.getBlockState(pos) : lastSeen.get(waystone.getWaystoneUid());
-			if (block != null)
-				blocks.put(waystone.getWaystoneUid(), block);
-		}
-
-		return blocks;
-	}
 
 	/** Activated warp plates have an attuned shard and aren't disabled by redstone. */
 	private static boolean isActivated(@Nullable final BlockState block) {
@@ -72,12 +58,16 @@ public class WaystonesLayer extends WorldLayer {
 			return false;
 
 		final ResourceLocation type = waystone.getWaystoneType();
+
 		if (WaystoneTypes.isSharestone(type))
 			return true;
+
 		if (type.equals(WaystoneTypes.WARP_PLATE))
 			return isActivated(block);
+
 		if (type.equals(WaystoneTypes.WAYSTONE))
 			return isPublic(waystone.getVisibility());
+
 		return false;
 	}
 
@@ -90,22 +80,11 @@ public class WaystonesLayer extends WorldLayer {
 			.setOptions(Options.builder().tooltipContent(name));
 	}
 
-	private static List<Marker<?>> markers(final ServerLevel level) {
-		final List<Waystone> waystones = WaystonesAPI.getAllWaystones(level.getServer())
-			.filter(waystone -> waystone.getDimension().equals(level.dimension()))
-			.toList();
+	private final WaystoneBlocks WAYSTONE_BLOCKS;
 
-		final Map<UUID, BlockState> blocks = blocks(level, waystones);
-		level.setAttached(Main.WAYSTONE_BLOCKS, blocks);
-
-		return waystones.stream()
-			.filter(waystone -> isShown(waystone, blocks.get(waystone.getWaystoneUid())))
-			.<Marker<?>>map(waystone -> marker(waystone, blocks.get(waystone.getWaystoneUid())))
-			.toList();
-	}
-
-	WaystonesLayer(final World world) {
-		super(Main.MOD_ID, world, () -> "Waystones");
+	WaystonesLayer(final World world, final WaystoneBlocks attachments) {
+		super(Mod.ID, world, () -> "Waystones");
+		WAYSTONE_BLOCKS = attachments;
 	}
 
 	/** Pl3xMap calls this from its own thread, so waystones are read on the server thread. */
@@ -113,5 +92,35 @@ public class WaystonesLayer extends WorldLayer {
 	public Collection<Marker<?>> getMarkers() {
 		final ServerLevel level = getWorld().getLevel();
 		return level.getServer().submit(() -> markers(level)).join();
+	}
+
+	/** Reads the blocks of waystones in loaded chunks and remembers the others. */
+	private Map<UUID, BlockState> blocks(final ServerLevel level, final List<Waystone> waystones) {
+		final Map<UUID, BlockState> attached = WAYSTONE_BLOCKS.getAttached(level);
+
+		final Map<UUID, BlockState> blocks = new HashMap<>();
+		for (final Waystone waystone : waystones) {
+			final BlockPos pos = waystone.getPos();
+
+			final BlockState block = level.isLoaded(pos) ? level.getBlockState(pos) : attached.get(waystone.getWaystoneUid());
+			if (block != null)
+				blocks.put(waystone.getWaystoneUid(), block);
+		}
+
+		return blocks;
+	}
+
+	private List<Marker<?>> markers(final ServerLevel level) {
+		final List<Waystone> waystones = WaystonesAPI.getAllWaystones(level.getServer())
+			.filter(waystone -> waystone.getDimension().equals(level.dimension()))
+			.toList();
+
+		final Map<UUID, BlockState> blocks = blocks(level, waystones);
+		WAYSTONE_BLOCKS.setAttached(level, blocks);
+
+		return waystones.stream()
+			.filter(waystone -> isShown(waystone, blocks.get(waystone.getWaystoneUid())))
+			.<Marker<?>>map(waystone -> marker(waystone, blocks.get(waystone.getWaystoneUid())))
+			.toList();
 	}
 }

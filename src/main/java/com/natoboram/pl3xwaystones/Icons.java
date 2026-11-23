@@ -26,11 +26,12 @@ public class Icons {
 	private static final String DEFAULT_KEY = Icons.key("waystone");
 
 	/** Registers an icon from the given path. */
-	public static void register(final Path file) throws IOException {
-		final String key = Icons.key(MoreFiles.getNameWithoutExtension(file));
+	public static void register(final Path path) throws IOException {
+		final String key = Icons.key(MoreFiles.getNameWithoutExtension(path));
 
-		try (InputStream image = Files.newInputStream(file)) {
-			Pl3xMap.api().getIconRegistry().register(new IconImage(key, ImageIO.read(image), "png"));
+		try (InputStream file = Files.newInputStream(path)) {
+			final IconImage icon = new IconImage(key, ImageIO.read(file), "png");
+			Pl3xMap.api().getIconRegistry().register(icon);
 		}
 	}
 
@@ -53,6 +54,6 @@ public class Icons {
 	 * @returns the key of the icon, such as `pl3xwaystones_waystone`.
 	 */
 	private static String key(final String name) {
-		return Main.MOD_ID + "_" + name;
+		return Mod.ID + "_" + name;
 	}
 }
