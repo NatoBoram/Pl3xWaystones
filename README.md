@@ -2,25 +2,15 @@
 
 Show Waystones on Pl3xMap.
 
-## Installation
-
-Install it on a Fabric server alongside [Waystones](https://modrinth.com/mod/waystones) and [Pl3xMap](https://modrinth.com/plugin/pl3xmap).
-
-| Mod       | Version    |
-| --------- | ---------- |
-| Minecraft | 1.21.1     |
-| Waystones | 21.1.46    |
-| Pl3xMap   | 1.21.1-508 |
-
 ## Usage
 
-Each world on the map gets a "Waystones" layer with an icon and a name on:
+## Installation
 
-- Discovered waystones, unless they're "Visible to Team"
-- Sharestones
-- Warp plates holding a shard attuned to another warp plate, unless they're disabled by redstone
+[![fabric](https://img.shields.io/badge/Fabric%20API-0.116.18-dbd0b4)](https://github.com/FabricMC/fabric)
+[![pl3xmap](https://img.shields.io/badge/Pl3xMap-508-5b00ff)](https://github.com/granny/Pl3xMap)
+[![waystones](https://img.shields.io/badge/Waystones-21.1.46-4e586e)](https://github.com/TwelveIterations/Waystones)
 
-The material of waystones and the status of warp plates are read from their block, which is remembered whenever its chunk is loaded. Until their chunk is first loaded with this mod installed, waystones use the default icon and warp plates are hidden.
+Downloads are available in [Releases](https://github.com/NatoBoram/Pl3xWaystones/releases). You can also test development builds by downloading them form the [Actions](https://github.com/NatoBoram/Pl3xWaystones/actions/workflows/gradle.yaml?query=branch%3Amain).
 
 ## License
 
