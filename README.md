@@ -2,6 +2,16 @@
 
 Show Waystones on Pl3xMap.
 
+## Usage
+
+## Installation
+
+[![fabric](https://img.shields.io/badge/Fabric%20API-0.116.18-dbd0b4)](https://github.com/FabricMC/fabric)
+[![pl3xmap](https://img.shields.io/badge/Pl3xMap-508-5b00ff)](https://github.com/granny/Pl3xMap)
+[![waystones](https://img.shields.io/badge/Waystones-21.1.46-4e586e)](https://github.com/TwelveIterations/Waystones)
+
+Downloads are available in [Releases](https://github.com/NatoBoram/Pl3xWaystones/releases). You can also test development builds by downloading them form the [Actions](https://github.com/NatoBoram/Pl3xWaystones/actions/workflows/gradle.yaml?query=branch%3Amain).
+
 ## License
 
 Copyright © 2026 Nato Boram

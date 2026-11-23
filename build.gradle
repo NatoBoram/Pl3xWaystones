@@ -22,6 +22,17 @@ repositories {
 	// Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
 	// See https://docs.gradle.org/current/userguide/declaring_repositories.html
 	// for more information about repositories.
+
+	// https://github.com/granny/Pl3xMap#developers
+	exclusiveContent {
+		forRepository {
+			maven { url = "https://api.modrinth.com/maven" }
+		}
+		filter { includeGroup "maven.modrinth" }
+	}
+
+	// https://github.com/TwelveIterations/Waystones
+	maven { url = "https://maven.twelveiterations.com/repository/maven-public/" }
 }
 
 loom {
@@ -42,6 +53,13 @@ dependencies {
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+
+	modImplementation "maven.modrinth:pl3xmap:${project.pl3xmap_version}"
+	modImplementation "net.blay09.mods:waystones-fabric:${project.waystones_version}"
+
+	// Loom strips the mods nested in Pl3xMap, so they're added back to run it locally.
+	modLocalRuntime "org.incendo:cloud-fabric:${project.cloud_fabric_version}"
+	modLocalRuntime "net.kyori:adventure-platform-fabric:${project.adventure_platform_fabric_version}"
 }
 
 processResources {
