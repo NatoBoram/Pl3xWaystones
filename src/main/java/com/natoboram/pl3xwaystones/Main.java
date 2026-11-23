@@ -37,7 +37,7 @@ public class Main implements ModInitializer {
 	public static final AttachmentType<Map<UUID, BlockState>> WAYSTONE_BLOCKS = AttachmentRegistry
 		.createPersistent(id("waystone_blocks"), Codec.unboundedMap(UUIDUtil.STRING_CODEC, BlockState.CODEC));
 
-	public static ResourceLocation id(final String path) {
+	private static ResourceLocation id(final String path) {
 		return ResourceLocation.fromNamespaceAndPath(MOD_ID, path);
 	}
 

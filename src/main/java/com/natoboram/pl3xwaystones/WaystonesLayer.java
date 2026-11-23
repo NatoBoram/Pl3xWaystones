@@ -19,11 +19,9 @@ import net.blay09.mods.waystones.api.WaystonesAPI;
 import net.blay09.mods.waystones.block.WarpPlateBlock;
 import net.fabricmc.api.Environment;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.state.BlockState;
-import net.pl3x.map.core.Pl3xMap;
 import net.pl3x.map.core.markers.layer.WorldLayer;
 import net.pl3x.map.core.markers.marker.Marker;
 import net.pl3x.map.core.markers.option.Options;
@@ -32,14 +30,7 @@ import net.pl3x.map.core.world.World;
 /** Shows the waystones, sharestones and warp plates of a world on Pl3xMap. */
 @Environment(value = SERVER)
 public class WaystonesLayer extends WorldLayer {
-
-	private static final String DEFAULT_ICON = icon("waystone");
 	private static final int ICON_SIZE = 16;
-
-	/** Icons are named after their image in `assets/pl3xwaystones/icons/`. */
-	public static String icon(final String name) {
-		return Main.MOD_ID + "_" + name;
-	}
 
 	/** Reads the blocks of waystones in loaded chunks and remembers the others. */
 	private static Map<UUID, BlockState> blocks(final ServerLevel level, final List<Waystone> waystones) {
@@ -54,16 +45,6 @@ public class WaystonesLayer extends WorldLayer {
 		}
 
 		return blocks;
-	}
-
-	/** Uses the icon of the block or of the waystone type, if there's one. */
-	private static String icon(final Waystone waystone, @Nullable final BlockState block) {
-		final ResourceLocation id = block == null
-			? waystone.getWaystoneType()
-			: BuiltInRegistries.BLOCK.getKey(block.getBlock());
-
-		final String icon = icon(id.getPath());
-		return Pl3xMap.api().getIconRegistry().has(icon) ? icon : DEFAULT_ICON;
 	}
 
 	/** Activated warp plates have an attuned shard and aren't disabled by redstone. */
@@ -104,7 +85,8 @@ public class WaystonesLayer extends WorldLayer {
 		final BlockPos pos = waystone.getPos();
 		final String name = HtmlEscapers.htmlEscaper().escape(waystone.getName().getString());
 
-		return Marker.icon(waystone.getWaystoneUid().toString(), pos.getX(), pos.getZ(), icon(waystone, block), ICON_SIZE)
+		return Marker
+			.icon(waystone.getWaystoneUid().toString(), pos.getX(), pos.getZ(), Icons.resolve(waystone, block), ICON_SIZE)
 			.setOptions(Options.builder().tooltipContent(name));
 	}
 
