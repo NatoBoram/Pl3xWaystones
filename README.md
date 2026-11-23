@@ -4,6 +4,8 @@ Show Waystones on Pl3xMap.
 
 ## Usage
 
+![Screenshot](https://github.com/user-attachments/assets/abd7ad02-526e-4e49-83ed-595374b7a829)
+
 ## Installation
 
 [![fabric](https://img.shields.io/badge/Fabric%20API-0.116.18-dbd0b4)](https://github.com/FabricMC/fabric)
