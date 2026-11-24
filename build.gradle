@@ -2,6 +2,7 @@ plugins {
 	id 'net.fabricmc.fabric-loom-remap' version "${loom_version}"
 	id 'maven-publish'
 	id 'com.diffplug.spotless' version '8.10.4'
+	id 'com.modrinth.minotaur' version '2.+'
 }
 
 spotless {
@@ -92,6 +93,31 @@ tasks.withType(org.gradle.api.tasks.bundling.Jar).configureEach {
 tasks.withType(org.gradle.jvm.tasks.Jar).configureEach {
 	archiveVersion = "${project.version}+${project.minecraft_version}"
 }
+
+modrinth {
+	token = System.getenv("MODRINTH_TOKEN")
+	projectId = project.mod_id
+	versionNumber = project.version.toString()
+	versionName = providers.environmentVariable("VERSION").orElse("v${project.version}")
+	uploadFile = remapJar
+	additionalFiles = [remapSourcesJar]
+	versionType = "alpha"
+	environment = "dedicated_server_only"
+	gameVersions = [
+		"${project.minecraft_version}"
+	]
+
+	dependencies {
+		required.version "fabric-api", "${project.fabric_api_version}"
+		required.version "pl3xmap", "${project.pl3xmap_version}"
+		// Waystones' Modrinth version numbers include the loader, unlike its Maven versions.
+		required.version "waystones", project.waystones_version.replace("+", "+fabric-")
+	}
+
+	syncBodyFrom = rootProject.file("README.md").text
+}
+
+tasks.modrinth.dependsOn(tasks.modrinthSyncBody)
 
 // configure the maven publication
 publishing {

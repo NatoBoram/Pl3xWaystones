@@ -50,6 +50,41 @@ jobs:
         with:
           subject-path: build/libs/*
 
+  publish-modrinth:
+    permissions:
+      contents: read
+
+    needs: build
+    if: github.actor != 'nektos/act'
+    runs-on: ubuntu-latest
+
+    environment:
+      name: modrinth
+      url: ${{ steps.url.outputs.url }}
+
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-java@v6
+        with:
+          java-version: 27
+          distribution: temurin
+      - uses: gradle/actions/setup-gradle@v6
+
+      - uses: actions/download-artifact@v8
+        with:
+          name: pl3xwaystones
+          path: build/libs
+
+      - run: ./gradlew modrinth -x assemble -x remapJar -x remapSourcesJar
+        env:
+          MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
+          VERSION: ${{ github.ref_name }}
+
+      - id: url
+        run: echo "url=https://modrinth.com/mod/pl3xwaystones/version/${VERSION#v}" >> "$GITHUB_OUTPUT"
+        env:
+          VERSION: ${{ github.ref_name }}
+
   publish-github:
     permissions:
       packages: write
