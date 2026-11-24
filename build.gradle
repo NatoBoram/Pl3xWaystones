@@ -107,5 +107,14 @@ publishing {
 		// Notice: This block does NOT have the same function as the block in the top level.
 		// The repositories here will be used for publishing your artifact, not for
 		// retrieving dependencies.
+
+		maven {
+			name = "GitHubPackages"
+			url = uri("https://maven.pkg.github.com/natoboram/pl3xwaystones")
+			credentials {
+				username = providers.gradleProperty("gpr.user").getOrNull() ?: System.getenv("GITHUB_USERNAME")
+				password = providers.gradleProperty("gpr.key").getOrNull() ?: System.getenv("GITHUB_TOKEN")
+			}
+		}
 	}
 }

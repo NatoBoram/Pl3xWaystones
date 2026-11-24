@@ -77,12 +77,12 @@ jobs:
 
       - run: ./gradlew publish
         env:
-          GITHUB_USERNAME: ${{ github.actor }}
+          GITHUB_USERNAME: ${{ github.repository_owner }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - id: url
         run: |
-          url=$(gh api '/users/NatoBoram/packages/maven/com.natoboram.pl3xwaystones/versions' | jq -r --arg NAME "${VERSION#v}" '.[] | select(.name == $NAME) | .package_html_url')
+          url=$(gh api '/users/NatoBoram/packages/maven/com.natoboram.pl3xwaystones/versions' | jq -r --arg NAME "${VERSION#v}" '.[] | select(.name | startswith($NAME)) | .package_html_url')
           echo "url=$url" >> "$GITHUB_OUTPUT"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
