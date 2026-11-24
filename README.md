@@ -1,5 +1,7 @@
 # Pl3xWaystones
 
+[![Modrinth Downloads](https://img.shields.io/badge/dynamic/json?color=1bd96a&label=Modrinth&query=downloads&suffix=%20downloads&url=https%3A%2F%2Fapi.modrinth.com%2Fv2%2Fproject%2FyQSZd1S4)](https://modrinth.com/mod/pl3xwaystones)
+
 Show Waystones on Pl3xMap.
 
 ## Usage
